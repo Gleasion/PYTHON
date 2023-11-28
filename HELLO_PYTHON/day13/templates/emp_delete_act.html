@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+var cnt = "{{cnt}}";
+if(cnt == "1"){
+	alert("정상적으로 탈퇴되었습니다.");
+	location.href = "emp_list";
+}else{
+	alert("탈퇴중 문제 발생");
+	history.back();
+}
+</script>
+</body>
+</html>

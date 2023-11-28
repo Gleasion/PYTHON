@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+
+<table border="1px">
+	<tr>
+		<td id="lo1">___</td>
+		<td id="lo2">___</td>
+		<td id="lo3">___</td>
+		<td id="lo4">___</td>
+		<td id="lo5">___</td>
+		<td id="lo6">___</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="6">
+			<input type="button" value="로또생성하기" py-click="myclick()"/>
+		</td>
+	</tr>
+</table>
+</body>
+<py-script>
+from random import random
+def myclick():
+	lo1 = js.document.getElementById("lo1")
+	lo2 = js.document.getElementById("lo2")
+	lo3 = js.document.getElementById("lo3")
+	lo4 = js.document.getElementById("lo4")
+	lo5 = js.document.getElementById("lo5")
+	lo6 = js.document.getElementById("lo6")
+
+	lotto = list(range(1, 45+1))
+	
+	for i in range(1000):
+		# rnd = int(random.randint(0, 44))
+		rnd = int(random() * 45)
+		temp = lotto[0]
+		lotto[0] = lotto[rnd]
+		lotto[rnd] = temp
+	
+	lo1.innerHTML = lotto[0]
+	lo2.innerHTML = lotto[1]
+	lo3.innerHTML = lotto[2]
+	lo4.innerHTML = lotto[3]
+	lo5.innerHTML = lotto[4]
+	lo6.innerHTML = lotto[5]
+</py-script>
+</html>

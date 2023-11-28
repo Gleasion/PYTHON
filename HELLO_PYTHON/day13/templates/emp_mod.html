@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function fn_mod(){
+	document.frm.submit();
+}
+</script>
+</head>
+<body>
+EMP_MOD
+<form action="emp_mod_act" name="frm" method="post" >
+<table border="1px">
+	<tr>
+		<td>사번</td>
+		<td><input type="text" name="e_id" value="{{emp.e_id}}" readonly/></td>
+	</tr>
+	<tr>
+		<td>이름</td>
+		<td><input type="text" name="e_name" value="{{emp.e_name}}" /></td>
+	</tr>
+	<tr>
+		<td>성별</td>
+		<td><input type="text" name="gen" value="{{emp.gen}}" /></td>
+	</tr>
+	<tr>
+		<td>주소</td>
+		<td><input type="text" name="addr" value="{{emp.addr}}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="button" value="수정" onclick="fn_mod()"/>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

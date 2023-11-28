@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+function fn_list(){
+	$.ajax({ 
+        type: "POST",	//방식
+        url: "/mylist",	//주소
+    	success: (res) => {	//성공시 전송데이터
+    		var list = res.list;
+    		var html = "";
+    		for(var i = 0; i < list.length; i++){
+			    html += "<tr>";
+			    html += "<td><a href='javascript:fn_one(" + list[i].m_id + ")'>" + list[i].m_id + "</a></td>";
+			    html += "<td>" + list[i].m_name + "</td>";
+			    html += "<td>" + list[i].age + "</td>";
+			    html += "<td>" + list[i].height + "</td>";
+			    html += "</tr>";
+    		}
+    		
+    		console.log(list);
+    		$("#myTbody").html(html);
+    	}
+	});
+}
+
+function fn_one(m_id){
+	   var param = {m_id : m_id};
+	    
+	   $.ajax({
+	        type : 'post',
+	        url : '/myone',
+	        data : param,
+	        success : (res) => {
+	           var mem = res.mem;
+	           $("#m_id").val(mem.m_id);
+	           $("#m_name").val(mem.m_name);
+	           $("#age").val(mem.age);
+	           $("#height").val(mem.height);
+	        }
+	        
+	   });
+	   
+	}
+
+function fn_add(){
+	var param = {
+		m_id : $("#m_id").val(),
+		m_name : $("#m_name").val(),
+		age : $("#age").val(),
+		height : $("#height").val()
+	};
+    
+	$.ajax({
+		type : 'post',
+		url : '/myadd',
+		data : param,
+		success : (res) => {
+			var cnt = res.cnt;
+			console.log(res);
+			
+			if(cnt == 1){
+				alert("정상적으로 등록되었습니다.");
+				fn_list();
+				
+				$("#m_id").val("");
+				$("#m_name").val("");
+				$("#age").val("");
+				$("#height").val("");
+			}
+		}
+	});
+}
+
+function fn_mod(){
+	var param = {
+		m_id : $("#m_id").val(),
+		m_name : $("#m_name").val(),
+		age : $("#age").val(),
+		height : $("#height").val()
+	};
+    
+	$.ajax({
+		type : 'post',
+		url : '/mymod',
+		data : param,
+		success : (res) => {
+			var cnt = res.cnt;
+			console.log(res);
+			
+			if(cnt == 1){
+				alert("정상적으로 수정되었습니다.");
+				fn_list();
+				
+				$("#m_id").val("");
+				$("#m_name").val("");
+				$("#age").val("");
+				$("#height").val("");
+			}
+		}
+	});
+}
+
+function fn_del(){
+	var param = {m_id : $("#m_id").val()};
+    
+	$.ajax({
+		type : 'post',
+		url : '/mydel',
+		data : param,
+		success : (res) => {
+			var cnt = res.cnt;
+			console.log(res);
+		 
+			if(cnt == 1){
+				alert("정상적으로 삭제되었습니다.");
+				fn_list();
+				
+				$("#m_id").val("");
+				$("#m_name").val("");
+				$("#age").val("");
+				$("#height").val("");
+			}
+		}
+   });
+}
+
+$(document).ready(function(){
+	fn_list();
+});
+</script>
+</head>
+<body>
+MEM_LIST
+<table border="1px">
+	<thead>
+		<tr>
+			<td>사번</td>
+			<td>이름</td>
+			<td>나이</td>
+			<td>신장</td>
+		</tr>
+	</thead>
+	<tbody id="myTbody">
+		<tr>
+			<td colspan="4">
+				검색된 데이터가 없습니다.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table border="1px">
+	<tr>
+		<td>사번</td>
+		<td>
+			<input type="text" id="m_id" />
+		</td>
+	</tr>
+	<tr>
+		<td>이름</td>
+		<td>
+			<input type="text" id="m_name" />
+		</td>
+	</tr>
+	<tr>
+		<td>나이</td>
+		<td>
+			<input type="text" id="age" />
+		</td>
+	</tr>
+		<td>신장</td>
+		<td>
+			<input type="text" id="height" />
+		</td>
+	</tr>
+		<td colspan="2">
+			<input type="button" value="추가" onclick='fn_add()'/>
+			<input type="button" value="수정" onclick='fn_mod()'/>
+			<input type="button" value="삭제" onclick='fn_del()'/>
+		</td>
+	<tr>
+</table>
+<a href="javascript:fn_list()">list</a>
+
+</body>
+</html>

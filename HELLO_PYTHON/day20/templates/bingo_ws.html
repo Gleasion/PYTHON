@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+
+<script type="text/javascript">
+var flag_click = false;
+var flag_manager = false;
+var idx_turn = 0;
+var arr2d = [
+	[0,0,0,0,0],
+	[0,0,0,0,0],
+	[0,0,0,0,0],
+	[0,0,0,0,0],
+	[0,0,0,0,0]
+];
+
+var singers = [
+	'레드벨벳','아이브','SS501','동방신기','슈퍼주니어',
+	'세븐틴','하이라이트','인피니트','틴탑','원더걸스',
+	'BTS','소녀시대','아이유','블랙펄','브아걸',
+	'브브걸','BTOB','베이비복스','블랙핑크','뉴진스',
+	'FT아일랜드','르세라핌','빅뱅','KARD','카라',
+	'샤이니','2NE1','씨야','티아라','가비앤제이'
+];
+
+function myrandom(){
+	for(var i=0;i<1000;i++){
+		var rnd = parseInt(Math.random()*30);
+		var a = singers[0];
+		singers[0]=singers[rnd];
+		singers[rnd]=a;
+	}
+	
+	var mytds = document.getElementsByClassName("mytd");
+	for(var i=0;i<mytds.length;i++){
+		mytds[i].innerHTML = singers[i];	
+	}
+	myrender();
+}
+function myrender(){
+	var mytds = document.getElementsByClassName("mytd");
+	for(var i=0;i<5;i++){
+		for(var j=0;j<5;j++){
+			if(arr2d[i][j]==0){
+				mytds[i*5+j].style.backgroundColor = "white";       
+			}
+			if(arr2d[i][j]==1){
+				mytds[i*5+j].style.backgroundColor = "pink";  
+			}
+		}
+	}
+	
+}
+function myclick(obj){
+	if(!flag_click){
+		return;
+	}
+	
+	var str_ij = obj.title;
+	var arr_ij = str_ij.split(",");
+	var i = parseInt(arr_ij[0]);
+	var j = parseInt(arr_ij[1]);
+	
+	if(arr2d[i][j]>0){
+		return;
+	}
+
+	var mytds = document.getElementsByClassName("mytd");
+	var gasu = mytds[i*5+j].innerHTML;
+	
+	var obj_user = document.querySelector("#it_user");
+	sock.send("CHOICE:"+obj_user.value+":"+gasu);
+	
+	
+	flag_click = false;
+	
+// 	var cnt = mycount();
+// 	if(cnt>=3){
+// 		alert("game over");
+// 	}
+// 	myrender();
+// 	console.log(arr2d+"");
+}
+function mycount(){
+	var cnt = 0;
+	var a = arr2d;
+	if(a[0][0]==1&&a[0][1]==1&&a[0][2]==1&&a[0][3]==1&&a[0][4]==1) cnt++
+	if(a[1][0]==1&&a[1][1]==1&&a[1][2]==1&&a[1][3]==1&&a[1][4]==1) cnt++
+	if(a[2][0]==1&&a[2][1]==1&&a[2][2]==1&&a[2][3]==1&&a[2][4]==1) cnt++
+	if(a[3][0]==1&&a[3][1]==1&&a[3][2]==1&&a[3][3]==1&&a[3][4]==1) cnt++
+	if(a[4][0]==1&&a[4][1]==1&&a[4][2]==1&&a[4][3]==1&&a[4][4]==1) cnt++
+	
+	if(a[0][0]==1&&a[1][0]==1&&a[2][0]==1&&a[3][0]==1&&a[4][0]==1) cnt++
+	if(a[0][1]==1&&a[1][1]==1&&a[2][1]==1&&a[3][1]==1&&a[4][1]==1) cnt++
+	if(a[0][2]==1&&a[1][2]==1&&a[2][2]==1&&a[3][2]==1&&a[4][2]==1) cnt++
+	if(a[0][3]==1&&a[1][3]==1&&a[2][3]==1&&a[3][3]==1&&a[4][3]==1) cnt++
+	if(a[0][4]==1&&a[1][4]==1&&a[2][4]==1&&a[3][4]==1&&a[4][4]==1) cnt++
+	
+	if(a[0][0]==1&&a[1][1]==1&&a[2][2]==1&&a[3][3]==1&&a[4][4]==1) cnt++
+	if(a[0][4]==1&&a[1][3]==1&&a[2][2]==1&&a[3][1]==1&&a[4][0]==1) cnt++
+	
+	return cnt;
+}
+
+function myok(){
+	var obj_rnd = document.getElementById("btn_rnd");
+	obj_rnd.removeAttribute('href');
+	
+	var obj_user = document.getElementById("it_user");
+	var obj_ready = document.getElementById("it_ready");
+	
+	
+	obj_user.disabled = false;
+	obj_ready.disabled = false;
+	
+}
+
+function myinit(){
+	var mytds = document.getElementsByClassName("mytd");
+	for(var i=0;i<5;i++){
+		for(var j=0;j<5;j++){
+			mytds[i*5+j].title = i+","+j;
+		}
+	}
+}
+
+</script>
+<script type="text/javascript">
+	var sock = io.connect('http://192.168.44.78:9999');
+	sock.on('connect', function() {
+		console.log("연결되었습니다.");
+	});
+
+	sock.on('message', function(msg) {
+		
+		
+		var str_info = msg.message;
+		console.log(str_info);
+		var arr_info = str_info.split(":");
+		var cmd = arr_info[0];
+		var user = arr_info[1];
+		
+		if(cmd=="READY"){
+			rcv_ready(user);
+		}
+		
+		if(cmd=="START"){
+			rcv_start(arr_info[2]);
+		}
+		if(cmd=="CHOICE"){
+			rcv_choice(arr_info[2]);
+		}
+		if(cmd=="DRAW"){
+			rcv_draw(arr_info[1],arr_info[2]);
+		}
+		
+		if(cmd=="WIN"){
+			alert(user+"은 빙고의신입니다.(**)");
+		}
+		if(cmd=="YOURTURN"){
+			var obj_user = document.querySelector("#it_user");
+			if(obj_user.value==user){
+				flag_click = true;
+			}
+			
+			var idx = -1;
+			for(var i=0;i<users.length;i++){
+				if(users[i]==user){
+					idx=i;
+					break;
+				}
+			}
+			
+			var mytds = document.getElementsByClassName("div_user");
+			for(var i=0;i<mytds.length;i++){
+				mytds[i].style.backgroundColor = "white";       
+			}
+			mytds[idx].style.backgroundColor = "red";       
+			
+		}
+		
+	});
+	
+	function rcv_draw(user_p,txt){
+		var c_idx = -1;
+		for(var i=0;i<users.length;i++){
+			if(users[i]==user_p){
+				c_idx=i;
+				break;
+			}
+		}
+		var cans = document.getElementsByClassName("can");
+
+		var arr_ij = txt.split(",");
+		var canvas = cans[c_idx];
+		var ctx = canvas.getContext('2d');
+		
+		for(var i=0;i<5;i++){
+			for(var j=0;j<5;j++){
+				ctx.beginPath();
+				ctx.arc(j*10+5, i*10+5, 4, 0, Math.PI * 2);
+				if(arr_ij[i*5+j]=="0"){
+					ctx.fillStyle = 'aquamarine';
+				}
+				if(arr_ij[i*5+j]=="1"){
+					ctx.fillStyle = 'pink';
+				}
+
+				ctx.fill();
+			}
+		}
+		
+		
+	}
+	
+	function rcv_choice(gasu){
+		var obj_user = document.querySelector("#it_user");
+		var mytds = document.getElementsByClassName("mytd");
+		var idx = -1;
+		for(var i=0;i<mytds.length;i++){
+			if(mytds[i].innerHTML==gasu){
+				idx = i;
+				break;
+			}
+		}
+		if(idx>-1){
+			var i = parseInt(idx/5);
+			var j = idx % 5;
+			arr2d[i][j]=1;
+			
+			if(flag_manager){
+				sock.send("YOURTURN:"+users[idx_turn%users.length]);
+				idx_turn++;
+			}
+			
+			
+		 	var cnt = mycount();
+		 	if(cnt>=1){
+		 		sock.send("WIN:"+obj_user.value);
+		 	}
+
+			sock.send("DRAW:"+obj_user.value+":"+arr2d);
+			myrender();
+		}
+		
+		
+	}
+	
+	function rcv_start(str_users){
+		var arr_user_1 =  str_users.split(",");
+		users.splice(0,users.length);
+		for(var i=0;i<arr_user_1.length;i++){
+			users.push(arr_user_1[i]);
+		}
+		
+		var obj_users = document.querySelectorAll(".div_user");
+		for(var i=0;i<users.length;i++){
+			obj_users[i].innerHTML = users[i];
+		}
+		
+		if(flag_manager){
+			sock.send("YOURTURN:"+users[idx_turn]);
+			idx_turn++;
+		}
+		
+		
+	}
+	
+	var users = [];
+	function rcv_ready(user){
+		var obj_users = document.querySelectorAll(".div_user");
+		
+		var idx = -1;
+		for(var i=0;i<users.length;i++){
+			if(users[i]==user){
+				idx=i;
+				break;
+			}
+		}
+		if(idx==-1){
+			users.push(user);
+		}
+		for(var i=0;i<users.length;i++){
+			obj_users[i].innerHTML = users[i];
+		}
+		
+
+	}
+	
+	
+	function mysend(){
+		sock.send("hello taekwon");
+	}
+	
+	function fn_ready(){
+		var obj_user = document.querySelector("#it_user");
+		sock.send("READY:"+obj_user.value);
+	}
+	function fn_start(){
+		var obj_user = document.querySelector("#it_user");
+		sock.send("START:"+obj_user.value+":"+users);
+		flag_manager = true;
+	}	
+</script>
+
+</head>
+<body onload="myinit()">
+BINGO 
+<a id="btn_rnd" href="javascript:myrandom()">RANDOM</a>
+<a href="javascript:myok()">OK</a> <br>
+<input type="text" id="it_user" disabled />
+<input type="button" id="it_ready" value="READY" disabled onclick="fn_ready()" />
+<input type="button" id="it_start" value="START" onclick="fn_start()" />
+
+<table border="1px">
+	<tr>
+		<td>
+		
+<table border="1px">
+	<tr>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+	</tr>
+	<tr>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+	</tr>
+	<tr>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+	</tr>
+	<tr>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+	</tr>
+	<tr>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+		<td class="mytd" onclick="myclick(this)">__</td>
+	</tr>
+</table>
+		
+		</td>
+		<td>
+		
+<table border="1px">
+	<tr>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+	</tr>
+	<tr>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+	</tr>
+	<tr>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+	</tr>
+	<tr>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+	</tr>
+	<tr>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+	</tr>
+	<tr>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+	</tr>
+	<tr>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+	</tr>
+	<tr>
+	
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+	</tr>
+	<tr>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+		<td><div class="div_user" ></div></td>
+	</tr>
+	<tr>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+		<td><canvas width="50px" height="50px" class="can"></canvas></td>
+	</tr>
+
+</table>
+		
+		
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+</body>
+</html>
+
+

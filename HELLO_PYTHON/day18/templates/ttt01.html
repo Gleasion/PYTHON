@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+var arr2d = [
+	[0,0,0,0,0],
+	[0,0,0,0,0],
+	[0,0,0,0,0],
+	[0,0,0,0,0],
+	[0,0,0,0,0]
+];
+var flag_xo = true;
+var flag_over = false;
+
+function myrender(){
+	var mimg = document.querySelectorAll('.mimg');
+	for(var i = 0; i < 5; i++){
+		for(var j = 0; j < 5; j++){
+			if(arr2d[i][j] == 0){
+				mimg[(i*5)+j].src='static/0.png';
+			}
+			if(arr2d[i][j] == 1){
+				mimg[(i*5)+j].src='static/1.png';
+			}
+			if(arr2d[i][j] == 2){
+				mimg[(i*5)+j].src='static/2.png';
+			}
+		}
+	}
+}
+
+function mclick(obj){
+	if(flag_over){
+		return;
+	}
+	
+	var val = obj.getAttribute('alt');
+	var str_ij = val.split(",")
+	var i = parseInt(str_ij[0]);
+	var j = parseInt(str_ij[1]);
+	
+	if(arr2d[i][j] > 0){
+		return;
+	}
+	if(flag_xo){
+		arr2d[i][j] = 1;
+	}else{
+		arr2d[i][j] = 2;
+	}
+	myrender();
+	
+	flag_over = isOver();
+	if(flag_over){
+		if(flag_xo){
+			alert("X 승리");
+		}else{
+			alert("O 승리");
+		}
+		flag_over = true;
+	}
+	
+	flag_xo =! flag_xo;
+}
+
+function isOver(){
+	var xo = 2;
+	
+	if(flag_xo){
+		xo = 1;
+	}
+	
+	var a2 = arr2d;
+	
+	if(a2[0][0] == xo && a2[0][1] == xo && a2[0][2] == xo && a2[0][3] == xo && a2[0][4] == xo) return true;
+	if(a2[1][0] == xo && a2[1][1] == xo && a2[1][2] == xo && a2[1][3] == xo && a2[1][4] == xo) return true;
+	if(a2[2][0] == xo && a2[2][1] == xo && a2[2][2] == xo && a2[2][3] == xo && a2[2][4] == xo) return true;
+	if(a2[3][0] == xo && a2[3][1] == xo && a2[3][2] == xo && a2[3][3] == xo && a2[3][4] == xo) return true;
+	if(a2[4][0] == xo && a2[4][1] == xo && a2[4][2] == xo && a2[4][3] == xo && a2[4][4] == xo) return true;
+	                                                      
+	if(a2[0][0] == xo && a2[1][0] == xo && a2[2][0] == xo && a2[3][0] == xo && a2[4][0] == xo) return true;
+	if(a2[0][1] == xo && a2[1][1] == xo && a2[2][1] == xo && a2[3][1] == xo && a2[4][1] == xo) return true;
+	if(a2[0][2] == xo && a2[1][2] == xo && a2[2][2] == xo && a2[3][2] == xo && a2[4][2] == xo) return true;
+	if(a2[0][3] == xo && a2[1][3] == xo && a2[2][3] == xo && a2[3][3] == xo && a2[4][3] == xo) return true;
+	if(a2[0][4] == xo && a2[1][4] == xo && a2[2][4] == xo && a2[3][4] == xo && a2[4][4] == xo) return true;
+	                                                      
+	if(a2[0][0] == xo && a2[1][1] == xo && a2[2][2] == xo && a2[3][3] == xo && a2[4][4] == xo) return true;
+	if(a2[4][0] == xo && a2[3][1] == xo && a2[2][2] == xo && a2[1][3] == xo && a2[0][4] == xo) return true;
+	
+	return false;
+}
+
+function myreset(){
+	arr2d = [
+		[0,0,0,0,0],
+		[0,0,0,0,0],
+		[0,0,0,0,0],
+		[0,0,0,0,0],
+		[0,0,0,0,0]
+	];
+    myrender();
+    flag_over = false;
+    flag_xo = true;
+}
+</script>
+</head>
+<body onload="myrender()">
+TTT
+<table>
+	<tr>
+		<td><img class="mimg" alt="0,0" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="0,1" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="0,2" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="0,3" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="0,4" src="static/0.png" onclick="mclick(this)"/></td>
+	</tr>
+	<tr>
+		<td><img class="mimg" alt="1,0" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="1,1" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="1,2" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="1,3" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="1,4" src="static/0.png" onclick="mclick(this)"/></td>
+	</tr>                     
+	<tr>                      
+		<td><img class="mimg" alt="2,0" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="2,1" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="2,2" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="2,3" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="2,4" src="static/0.png" onclick="mclick(this)"/></td>
+	</tr>
+	<tr>                      
+		<td><img class="mimg" alt="3,0" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="3,1" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="3,2" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="3,3" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="3,4" src="static/0.png" onclick="mclick(this)"/></td>
+	</tr>
+	<tr>                      
+		<td><img class="mimg" alt="4,0" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="4,1" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="4,2" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="4,3" src="static/0.png" onclick="mclick(this)"/></td>
+		<td><img class="mimg" alt="4,4" src="static/0.png" onclick="mclick(this)"/></td>
+	</tr>
+</table>
+<input type="button" value="reset" onclick="myreset()">
+</body>
+</html>

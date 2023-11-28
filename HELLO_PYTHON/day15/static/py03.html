@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+<style type="text/css">
+#it{
+	width: 30px;
+}
+td{
+	text-align: center;
+}
+</style>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>출력단수:</td>
+		<td>
+			<input type="text" id="it">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="button" value="출력하기" py-click="myclick()"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<textarea class="disp" rows="20" cols="15"></textarea>
+		</td>
+	</tr>
+</table>
+</body>
+<py-script>
+def myclick():
+	dan = int(js.document.getElementById("it").value)
+	v_disp = js.document.querySelector('.disp')
+	gugu = ""
+
+	for i in range(1, 10):
+		gugu += str(dan) + " * " + str(i) + " = " + str(dan * i) + "\n"
+
+	js.console.log(gugu)
+	
+	v_disp.innerHTML = ""
+	v_disp.innerHTML = gugu
+
+</py-script>
+</html>

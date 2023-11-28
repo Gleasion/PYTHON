@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+#itFirst, #itLast{
+	width: 100px;
+}
+#disp{
+	height: 200px;
+}
+</style>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>첫 별수: </td>
+		<td>
+			<input type="text" id="itFirst" />
+		</td>
+	</tr>
+	<tr>
+		<td>끝 별수: </td>
+		<td>
+			<input type="text" id="itLast" />
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="2">
+			<input type="button" value="별 그리기" onclick="fn_draw()"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div id="disp"></div>
+		</td>
+	</tr>
+</table>
+</body>
+<script type="text/javascript">
+function star(cnt){
+	var ret = "";
+	
+	for(var i = 0; i < cnt; i++){
+		ret += "*";
+	}
+	ret += "\n";
+	return ret;
+}
+
+function fn_draw(){
+	var first = parseInt(document.querySelector('#itFirst').value);
+	var last = parseInt(document.querySelector('#itLast').value);
+	var v_disp = document.querySelector('#disp');
+	
+	str = "";
+	
+	for(var i = first; i <= last; i++){
+		str += star(i);
+	}
+	
+	v_disp.innerText = "";
+	v_disp.innerText = str;
+}
+
+</script>
+</html>

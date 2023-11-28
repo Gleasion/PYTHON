@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+td{
+	text-align: center;
+}
+</style>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td colspan="3">
+			<input type="text" name="it" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="1" onclick="fn_num()">
+		</td>
+		<td>
+			<input type="button" class="num" value="2" onclick="fn_num()">
+		</td>
+		<td>
+			<input type="button" class="num" value="3" onclick="fn_num()">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="4" onclick="fn_num()">
+		</td>
+		<td>
+			<input type="button" class="num" value="5" onclick="fn_num()">
+		</td>
+		<td>
+			<input type="button" class="num" value="6" onclick="fn_num()">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="7" onclick="fn_num()">
+		</td>
+		<td>
+			<input type="button" class="num" value="8" onclick="fn_num()">
+		</td>
+		<td>
+			<input type="button" class="num" value="9" onclick="fn_num()">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="0" onclick="fn_num()">
+		</td>
+		<td colspan="2">
+			<input type="button" id="btnCall" value="CALL" onclick="fn_btn()"/>
+		</td>
+	</tr>
+</table>
+</body>
+<script type="text/javascript">
+var v_disp = document.querySelector('[name="it"]');
+
+function fn_num(){
+	var button = document.querySelectorAll(".num").value;
+	var num = parseInt(event.target.value);
+	
+	console.log(num);
+	var str_old = v_disp.value;
+	var str_new = str_old + num;
+	
+	v_disp.value = str_new;
+}
+
+function fn_btn(){
+	alert(v_disp.value + "\n위 번호로 전화중입니다.");
+	
+}
+</script>
+</html>

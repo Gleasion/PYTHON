@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function fn_circle(){
+	var txt = "1,1,1,1,1,1,1,0,0,0,1,0,1,0,0,1,0,0,1,0,1,0,0,0,1";
+	var arr_ij = txt.split(",");
+	
+	const canvas = document.getElementById('can');
+	const ctx = canvas.getContext('2d');
+	
+	for(var i = 0; i < 5; i++){
+		for(var j = 0; j < 5; j++){
+			ctx.beginPath();
+			ctx.arc(j*100+50,i*100+50,40,0,2*Math.PI);
+			
+			if(arr_ij[(i*5)+j] == "0"){
+				ctx.fillStyle = 'aquamarine';
+			}
+			if(arr_ij[(i*5)+j] == "1"){
+				ctx.fillStyle = 'pink';
+			}
+			ctx.fill();
+		}
+	}
+
+}
+
+</script>
+</head>
+<body>
+CANVAS
+<a href="javascript:fn_circle()">circle</a><br/>
+<canvas width="500px" height="500px" id="can">
+</canvas>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+#itFirst, #itLast {
+   width: 100px;
+}
+
+#disp {
+   height: 200px;
+}
+</style>
+<script type="text/javascript">
+function myclick(){
+   var res = "";
+   var first1 = document.getElementById("itFirst").value;
+   var first = parseInt(first1);
+   var last1 = document.getElementById("itLast").value;
+   var last = parseInt(last1);
+   
+   for (var i = first; i <= last; i++) {
+      for (var j = 0; j < i; j++) {
+         res += "*";
+      }
+      res += "<br>";
+   }
+
+   document.querySelector("#disp").innerHTML = res;
+}
+</script>
+</head>
+<body>
+<table border="1">
+   <tr>
+      <td>첫별수:</td>
+      <td>
+         <input type="text" id="itFirst">
+      </td>
+   </tr>
+   <tr>
+      <td>끝별수:</td>
+      <td>
+         <input type="text" id="itLast">
+      </td>
+   </tr>
+   <tr>
+      <td colspan="2">
+         <input type="button" value="별그리기" onclick="myclick()">
+      </td>
+   </tr>
+   <tr>
+      <td colspan="2">
+         <div id="disp">
+         </div>
+      </td>
+   </tr>
+</table>
+</body>
+</html>

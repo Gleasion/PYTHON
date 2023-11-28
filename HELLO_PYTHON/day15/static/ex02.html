@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td id="lo1">___</td>
+		<td id="lo2">___</td>
+		<td id="lo3">___</td>
+		<td id="lo4">___</td>
+		<td id="lo5">___</td>
+		<td id="lo6">___</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="6">
+			<input type="button" value="로또생성하기" onclick="fn_lotto()"/>
+		</td>
+	</tr>
+</table>
+</body>
+<script type="text/javascript">
+function fn_lotto(){
+	var lo1 = document.getElementById("lo1");
+	var lo2 = document.getElementById("lo2");
+	var lo3 = document.getElementById("lo3");
+	var lo4 = document.getElementById("lo4");
+	var lo5 = document.getElementById("lo5");
+	var lo6 = document.getElementById("lo6");
+	
+	var lotto = [];
+	for(let i = 0; i < 6; i++){
+		const rnd = Math.floor(Math.random()*45)+1;
+		
+		if(lotto.indexOf(rnd) == -1){
+			lotto[i] = rnd;
+		}else{
+			i -= 1;
+		}
+	}
+	
+	lo1.innerText = lotto[0];
+	lo2.innerText = lotto[1];
+	lo3.innerText = lotto[2];
+	lo4.innerText = lotto[3];
+	lo5.innerText = lotto[4];
+	lo6.innerText = lotto[5];
+}
+
+</script>
+</html>

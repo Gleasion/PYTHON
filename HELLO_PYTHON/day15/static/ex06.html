@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.itMine, .itCom, .itResult{
+	width: 30px;
+}
+</style>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>나 : </td>
+		<td>
+			<input type="text" class="itMine" />
+		</td>
+	</tr>
+	<tr>
+		<td>컴 : </td>
+		<td>
+			<input type="text" class="itCom" />
+		</td>
+	</tr>
+	<tr>
+		<td>결과 : </td>
+		<td>
+			<input type="text" class="itResult" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="button" value="게임하기" onclick="fn_game()"/>
+		</td>
+	</tr>
+</table>
+</body>
+<script type="text/javascript">
+function fn_game(){
+	var itMine = document.querySelector('.itMine').value;
+	var itCom = document.querySelector('.itCom');
+	var itResult = document.querySelector('.itResult');
+	
+	var arr = ['가위', '바위', '보'];
+	var rnd = parseInt(Math.random()*3);
+	
+	for(var i = 0; i < 1000; i++){
+		temp = arr[0];
+		arr[0] = arr[rnd];
+		arr[rnd] = temp;
+	}
+	
+	var com = arr[rnd];
+	
+	var result = "";
+	
+	if(itMine=="가위" && com=="가위") result="비김";	
+	if(itMine=="가위" && com=="바위") result="짐";	
+	if(itMine=="가위" && com=="보") result="이김";
+	
+	if(itMine=="바위" && com=="가위") result="이김";	
+	if(itMine=="바위" && com=="바위") result="비김";	
+	if(itMine=="바위" && com=="보") result="짐";
+	
+	if(itMine=="보"&& com=="가위") result="짐";	
+	if(itMine=="보"&& com=="바위") result="이김";	
+	if(itMine=="보"&& com=="보") result="비김";
+	
+	itCom.value = com;
+	itResult.value = result;
+	
+}
+</script>
+</html>

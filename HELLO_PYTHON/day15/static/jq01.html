@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GOOD MORNING</title>
+<script src="jquery-3.7.0.js"></script>
+<script type="text/javascript">
+function fn_change(){
+	$('div').text("GOOD EVENING");
+}
+
+$(document).ready(function(){
+	$("body").on("click", "#btn", function() {
+		fn_change();
+	});
+});
+</script>
+</head>
+<body>
+<div id="morning">GOOD MORNING</div>
+<input type="button" id="btn" value="CLICK">
+</body>
+</html>

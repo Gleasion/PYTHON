@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td id="lo1">___</td>
+		<td id="lo2">___</td>
+		<td id="lo3">___</td>
+		<td id="lo4">___</td>
+		<td id="lo5">___</td>
+		<td id="lo6">___</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="6">
+			<input type="button" value="로또생성하기" onclick="myclick()"/>
+		</td>
+	</tr>
+</table>
+</body>
+<script type="text/javascript">
+function myclick(){
+	var lo1 = document.getElementById("lo1");
+	var lo2 = document.getElementById("lo2");
+	var lo3 = document.getElementById("lo3");
+	var lo4 = document.getElementById("lo4");
+	var lo5 = document.getElementById("lo5");
+	var lo6 = document.getElementById("lo6");
+	
+	var lotto = [];
+	for(var i = 1; i <= 45; i++) { // 1부터 45까지 숫자 추가
+		lotto.push(i);
+	}
+	
+	for(var i = 0; i < 1000; i++) {
+		rnd = parseInt(Math.random() * 45);
+		var temp = lotto[0];
+		lotto[0] = lotto[rnd];
+		lotto[rnd] = temp;
+	}
+	
+	lo1.innerHTML = lotto[0];
+	lo2.innerHTML = lotto[1];
+	lo3.innerHTML = lotto[2];
+	lo4.innerHTML = lotto[3];
+	lo5.innerHTML = lotto[4];
+	lo6.innerHTML = lotto[5];
+	
+}
+
+</script>
+</html>

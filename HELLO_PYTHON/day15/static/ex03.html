@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+#it{
+	width: 30px;
+}
+td{
+	text-align: center;
+}
+</style>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>출력단수:</td>
+		<td>
+			<input type="text" id="it">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="button" value="출력하기" onclick="fn_gugu()"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<textarea class="disp" rows="20" cols="15"></textarea>
+		</td>
+	</tr>
+</table>
+</body>
+<script type="text/javascript">
+function fn_gugu(){
+	var dan = document.getElementById('it').value;
+	var gugu = "";
+	var v_disp = document.querySelector('.disp');
+	for(var i = 1; i <= 9; i++){
+		gugu += dan + " * " + i + " = " + dan * i + "\n";
+	}
+	console.log(gugu);
+	
+	v_disp.innerHTML = "";
+	v_disp.insertAdjacentHTML('beforeend',gugu);
+}
+</script>
+
+</html>

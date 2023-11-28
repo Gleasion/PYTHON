@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+<style type="text/css">
+#it {
+    width: 30px;
+}
+td {
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<table border="1px">
+    <tr>
+        <td>출력단수 : </td>
+        <td>
+            <input type="text" id="it">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="button" value="출력하기" py-click="myClick()"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <textarea class="disp" rows="20" cols="20"></textarea>
+        </td>
+    </tr>
+</table>
+</body>
+<py-script>
+def myClick():
+    a = js.document.getElementById("it")
+    aa = int(a.value)  # Get the value of the input field
+    txt = ""
+
+    for i in range(1, 10):
+        txt += str(aa) + " * " + str(i) + " = " + str(aa * i) + "\n"
+
+    js.document.querySelector(".disp").innerHTML = txt
+</py-script>
+</html>

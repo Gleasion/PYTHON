@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-3.7.0.js"></script>
+<style type="text/css">
+input[name=it]{
+	text-align: right;
+}
+td{
+	text-align: center;
+}
+</style>
+<script type="text/javascript">
+function fn_num(){
+	var button = $(".num").val();
+	var num = parseInt(event.target.value);
+	console.log(num);
+	
+	var str_old = $("input[name=it]").val();
+	var str_new = str_old + num;
+	
+	 $("input[name=it]").val(str_new);
+}
+
+function fn_btn(){
+	alert($("input[name=it]").val() + "\n위 번호로 전화중입니다.");
+}
+
+$(document).ready(function(){
+	$(".num").bind("click",function(){
+		fn_num();
+	});
+});
+	
+$(document).ready(function(){
+	$("#btnCall").bind("click",function(){
+		fn_btn();
+	});
+});
+</script>
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td colspan="3">
+			<input type="text" id="it" name="it" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="1" >
+		</td>
+		<td>
+			<input type="button" class="num" value="2">
+		</td>
+		<td>
+			<input type="button" class="num" value="3">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="4">
+		</td>
+		<td>
+			<input type="button" class="num" value="5">
+		</td>
+		<td>
+			<input type="button" class="num" value="6">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="7">
+		</td>
+		<td>
+			<input type="button" class="num" value="8">
+		</td>
+		<td>
+			<input type="button" class="num" value="9">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" class="num" value="0">
+		</td>
+		<td colspan="2">
+			<input type="button" id="btnCall" value="CALL" />
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+function fn_ajax(){
+	var param = {menu:'짬뽕'};
+	
+	$.ajax({ 
+        type: "POST",	//방식
+        url: "/myajax",	//주소
+        data: param,
+    	success: function(msg){	//성공시 전송데이터
+    		console.log(msg);
+      	}
+	});
+}
+
+function fn_list(){
+	$.ajax({ 
+        type: "POST",	//방식
+        url: "/mylist",	//주소
+    	success: (res) => {	//성공시 전송데이터
+    		var list = res.list;
+    		var html = "";
+    		for(var i = 0; i < list.length; i++){
+			    html += "<tr>";
+			    html += "<td><a href='javascript:fn_one(" + list[i].e_id + ")'>" + list[i].e_id + "</a></td>";
+			    html += "<td>" + list[i].e_name + "</td>";
+			    html += "<td>" + list[i].gen + "</td>";
+			    html += "<td>" + list[i].addr + "</td>";
+			    html += "</tr>";
+    		}
+    		
+    		console.log(list);
+    		$("#myTbody").html(html);
+    	}
+	});
+}
+
+function fn_one(e_id){
+   var param = {e_id : e_id};
+    
+   $.ajax({
+        type : 'post',
+        url : '/myone',
+        data : param,
+        success : (res) => {
+           var emp = res.emp;
+           $("#e_id").val(emp.e_id);
+           $("#e_name").val(emp.e_name);
+           $("#gen").val(emp.gen);
+           $("#addr").val(emp.addr);
+        }
+        
+   });
+   
+}
+
+function fn_mod(){
+	var param = {
+		e_id : $("#e_id").val(),
+		e_name : $("#e_name").val(),
+		gen : $("#gen").val(),
+		addr : $("#addr").val()
+	};
+    
+	$.ajax({
+		type : 'post',
+		url : '/mymod',
+		data : param,
+		success : (res) => {
+			var cnt = res.cnt;
+			console.log(res);
+			
+			if(cnt == 1){
+				alert("정상적으로 수정되었습니다.");
+				fn_list();
+				
+				$("#e_id").val("");
+				$("#e_name").val("");
+				$("#gen").val("");
+				$("#addr").val("");
+			}
+		}
+	});
+}
+
+function fn_add(){
+	var param = {
+		e_id : $("#e_id").val(),
+		e_name : $("#e_name").val(),
+		gen : $("#gen").val(),
+		addr : $("#addr").val()
+	};
+    
+	$.ajax({
+		type : 'post',
+		url : '/myadd',
+		data : param,
+		success : (res) => {
+			var cnt = res.cnt;
+			console.log(res);
+			
+			if(cnt == 1){
+				alert("정상적으로 등록되었습니다.");
+				fn_list();
+				
+				$("#e_id").val("");
+				$("#e_name").val("");
+				$("#gen").val("");
+				$("#addr").val("");
+			}
+		}
+	});
+}
+
+function fn_del(){
+	var param = {e_id : $("#e_id").val()};
+    
+	$.ajax({
+		type : 'post',
+		url : '/mydel',
+		data : param,
+		success : (res) => {
+			var cnt = res.cnt;
+			console.log(res);
+		 
+			if(cnt == 1){
+				alert("정상적으로 삭제되었습니다.");
+				fn_list();
+				
+				$("#e_id").val("");
+				$("#e_name").val("");
+				$("#gen").val("");
+				$("#addr").val("");
+			}
+		}
+   });
+}
+
+$(document).ready(function(){
+	fn_list();
+});
+</script>
+</head>
+<body>
+EMP
+<table border="1px">
+	<thead>
+		<tr>
+			<td>사번</td>
+			<td>이름</td>
+			<td>성별</td>
+			<td>주소</td>
+		</tr>
+	</thead>
+	<tbody id="myTbody">
+		<tr>
+			<td colspan="4">
+				검색된 데이터가 없습니다.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<table border="1px">
+	<tr>
+		<td>사번</td>
+		<td>
+			<input type="text" id="e_id" />
+		</td>
+	</tr>
+	<tr>
+		<td>이름</td>
+		<td>
+			<input type="text" id="e_name" />
+		</td>
+	</tr>
+	<tr>
+		<td>성별</td>
+		<td>
+			<input type="text" id="gen" />
+		</td>
+	</tr>
+		<td>주소</td>
+		<td>
+			<input type="text" id="addr" />
+		</td>
+	</tr>
+		<td colspan="2">
+			<input type="button" value="추가" onclick='fn_add()'/>
+			<input type="button" value="수정" onclick='fn_mod()'/>
+			<input type="button" value="삭제" onclick='fn_del()'/>
+		</td>
+	<tr>
+</table>
+<a href="javascript:fn_ajax()">ajax</a>
+<a href="javascript:fn_list()">list</a>
+</body>
+</html>
+
+
+
